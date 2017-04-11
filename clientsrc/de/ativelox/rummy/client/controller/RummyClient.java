@@ -27,6 +27,8 @@ import de.ativelox.rummy.client.view.WinScreenView;
 import de.ativelox.rummy.client.view.components.cards.Card;
 import de.ativelox.rummy.client.view.components.cards.ICard;
 import de.ativelox.rummy.commons.EMessage;
+import de.ativelox.rummy.properties.ECardIdentifier;
+import de.ativelox.rummy.properties.ECardType;
 import de.ativelox.rummy.settings.IClientSetting;
 import de.ativelox.rummy.settings.Settings;
 import de.ativelox.rummy.settings.SettingsProvider;
@@ -235,7 +237,7 @@ public class RummyClient extends Thread {
 			e.printStackTrace();
 
 		}
-
+		
 		int fps = 60;
 		double timePerTick = 1_000_000_000 / fps;
 		double ticksToProcess = 0;
@@ -301,8 +303,8 @@ public class RummyClient extends Thread {
 							// card needed
 							card = cards[i].split("\t");
 
-							int identifier = Integer.parseInt(card[0]);
-							int type = Integer.parseInt(card[1]);
+							ECardIdentifier identifier = ECardIdentifier.valueOf(card[0]);
+							ECardType type = ECardType.valueOf(card[1]);
 							int ID = Integer.parseInt(card[2]);
 
 							hand.add(new Card(identifier, type, ID));
@@ -334,6 +336,13 @@ public class RummyClient extends Thread {
 			} catch (IOException e) {
 				e.printStackTrace();
 
+			}
+			
+			try {
+				Thread.sleep(15);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -527,7 +536,13 @@ public class RummyClient extends Thread {
 		}
 
 		if (selected && gotCard) {
-			if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
+			if(gameView.getScoreArea().getBounds().contains(selectedCard.getBounds())){
+				gameView.getScoreArea().addCard(selectedCard);
+				selected = false;
+				gotCard = false;
+				selectedCard = null;
+			}
+			else if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
 				selected = false;
 				gotCard = false;
 				selectedCard = null;

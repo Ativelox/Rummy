@@ -113,6 +113,7 @@ public class RummyPlayer extends Thread {
 			while (!stopGame) {
 
 				if (!in.ready()) {
+					Thread.sleep(100);
 					continue;
 				}
 
@@ -121,10 +122,10 @@ public class RummyPlayer extends Thread {
 				if (command.startsWith(EMessage.C2S_DRAW_CARD.ordinal() + "")) {
 
 					if (playerNumber == 1) {
-						// player one drawing a card
+						// TODO: player one drawing a card
 
 					} else if (playerNumber == 2) {
-						// player two drawing a card
+						// TODO: player two drawing a card
 
 					}
 
@@ -153,11 +154,16 @@ public class RummyPlayer extends Thread {
 					}
 					
 				}
+				
+				Thread.sleep(100);
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} finally {
 			try {
 				socket.close();

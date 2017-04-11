@@ -10,6 +10,7 @@ import de.ativelox.rummy.client.controller.RenderManager;
 import de.ativelox.rummy.client.view.components.Deck;
 import de.ativelox.rummy.client.view.components.OpponentHand;
 import de.ativelox.rummy.client.view.components.OwnHand;
+import de.ativelox.rummy.client.view.components.ScoreArea;
 import de.ativelox.rummy.client.view.properties.IRenderable;
 
 /**
@@ -39,6 +40,8 @@ public class GameView extends AView {
 	 * Your own hand view.
 	 */
 	private OwnHand ownHand;
+	
+	private ScoreArea scoreArea;
 
 	/**
 	 * Initiates a new GameView instance, holding all the UI related information
@@ -95,6 +98,10 @@ public class GameView extends AView {
 	public OwnHand getOwnHand() {
 		return ownHand;
 	}
+	
+	public ScoreArea getScoreArea(){
+		return scoreArea;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -106,6 +113,7 @@ public class GameView extends AView {
 		ownHand = new OwnHand(manager);
 		opponentHand = new OpponentHand(manager);
 		deck = new Deck(manager);
+		scoreArea = new ScoreArea(manager);
 
 	}
 

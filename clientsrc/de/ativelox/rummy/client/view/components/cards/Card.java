@@ -11,6 +11,7 @@ import java.util.Optional;
 import de.ativelox.rummy.client.assets.Assets;
 import de.ativelox.rummy.client.view.components.AGUIElement;
 import de.ativelox.rummy.client.view.properties.IRenderable;
+import de.ativelox.rummy.commons.EMessage;
 import de.ativelox.rummy.properties.CardProperties;
 import de.ativelox.rummy.properties.ECardIdentifier;
 import de.ativelox.rummy.properties.ECardType;
@@ -28,7 +29,7 @@ public class Card extends AGUIElement implements ICard{
 	/**
 	 * The identifier of this Card object.
 	 */
-	private int identifier;
+	private ECardIdentifier identifier;
 
 	/**
 	 * The layer of this card object.
@@ -38,9 +39,11 @@ public class Card extends AGUIElement implements ICard{
 	/**
 	 * The type of this Card object.
 	 */
-	private int type;
+	private ECardType type;
 	
 	private int ID;
+	
+	private BufferedImage cardImage;
 
 	/**
 	 * Initiates a new Card instance. The initial position on the component is
@@ -51,14 +54,8 @@ public class Card extends AGUIElement implements ICard{
 	 * @param mType
 	 *            The type of this card.
 	 */
-	public Card(int mIdentifier, int mType, int mID) {
-		super(0, 0, CardProperties.SCALED_CARD_WIDTH, CardProperties.SCALED_CARD_HEIGHT);
-
-		ID = mID;
-		identifier = mIdentifier;
-		type = mType;
-
-		layer = IRenderable.BACKGROUND_LAYER;
+	public Card(ECardIdentifier mIdentifier, ECardType mType, int mID) {
+		this(mIdentifier, mType, mID, 0, 0);
 	}
 
 	/**
@@ -73,12 +70,16 @@ public class Card extends AGUIElement implements ICard{
 	 * @param mY
 	 *            The y coordinate of this card.
 	 */
-	public Card(int mIdentifier, int mType, int mID, int mX, int mY) {
+	public Card(ECardIdentifier mIdentifier, ECardType mType, int mID, int mX, int mY) {
 		super(mX, mY, CardProperties.SCALED_CARD_WIDTH, CardProperties.SCALED_CARD_HEIGHT);
 
 		ID = mID;
 		identifier = mIdentifier;
 		type = mType;
+		
+		cardImage = getCorrespondingImage();
+
+		layer = IRenderable.BACKGROUND_LAYER;
 	}
 
 	/**
@@ -95,7 +96,7 @@ public class Card extends AGUIElement implements ICard{
 	 * 
 	 * @return CardIdentifier: the current identifier of this card.
 	 */
-	public int getIdentifier() {
+	public ECardIdentifier getIdentifier() {
 		return identifier;
 	}
 
@@ -109,7 +110,7 @@ public class Card extends AGUIElement implements ICard{
 	 * 
 	 * @return CardType: the current type of this card.
 	 */
-	public int getType() {
+	public ECardType getType() {
 		return type;
 	}
 
@@ -130,7 +131,7 @@ public class Card extends AGUIElement implements ICard{
 
 	@Override
 	public void render(final Graphics g) {
-		g.drawImage(getCorrespondingImage().get(), x, y, width, height, null);
+		g.drawImage(cardImage, x, y, width, height, null);
 	}
 
 	/**
@@ -141,76 +142,76 @@ public class Card extends AGUIElement implements ICard{
 	 * @return Optional&ltBufferedImage&gt: The BufferedImage for the card
 	 *         initialized.
 	 */
-	private Optional<BufferedImage> getCorrespondingImage() {
+	private BufferedImage getCorrespondingImage() {
 
 		BufferedImage[] cardImages = null;
 
-		if (type == ECardType.DIAMONDS.ordinal()) {
+		if (type == ECardType.DIAMONDS) {
 			cardImages = Assets.DIAMONDS;
 
-		} else if (type == ECardType.CLUBS.ordinal()) {
+		} else if (type == ECardType.CLUBS) {
 			cardImages = Assets.CLUBS;
 
-		} else if (type == ECardType.HEART.ordinal()) {
+		} else if (type == ECardType.HEART) {
 			cardImages = Assets.HEARTS;
 
-		} else if (type == ECardType.SPADE.ordinal()) {
+		} else if (type == ECardType.SPADE) {
 			cardImages = Assets.SPADES;
 
-		} else if (type == ECardType.JOKERS.ordinal()) {
+		} else if (type == ECardType.JOKERS) {
 			cardImages = Assets.JOKERS;
 
 		}
 
-		Optional<BufferedImage> image = null;
+		BufferedImage image = null;
 
-		if (identifier == ECardIdentifier.TWO.ordinal()) {
-			image = Optional.of(cardImages[0]);
+		if (identifier == ECardIdentifier.TWO) {
+			image = cardImages[0];
 
-		} else if (identifier == ECardIdentifier.THREE.ordinal()) {
-			image = Optional.of(cardImages[1]);
+		} else if (identifier == ECardIdentifier.THREE) {
+			image = cardImages[1];
 
-		} else if (identifier == ECardIdentifier.FOUR.ordinal()) {
-			image = Optional.of(cardImages[2]);
+		} else if (identifier == ECardIdentifier.FOUR) {
+			image = cardImages[2];
 
-		} else if (identifier == ECardIdentifier.FIVE.ordinal()) {
-			image = Optional.of(cardImages[3]);
+		} else if (identifier == ECardIdentifier.FIVE) {
+			image = cardImages[3];
 
-		} else if (identifier == ECardIdentifier.SIX.ordinal()) {
-			image = Optional.of(cardImages[4]);
+		} else if (identifier == ECardIdentifier.SIX) {
+			image = cardImages[4];
 
-		} else if (identifier == ECardIdentifier.SEVEN.ordinal()) {
-			image = Optional.of(cardImages[5]);
+		} else if (identifier == ECardIdentifier.SEVEN) {
+			image = cardImages[5];
 
-		} else if (identifier == ECardIdentifier.EIGHT.ordinal()) {
-			image = Optional.of(cardImages[6]);
+		} else if (identifier == ECardIdentifier.EIGHT) {
+			image = cardImages[6];
 
-		} else if (identifier == ECardIdentifier.NINE.ordinal()) {
-			image = Optional.of(cardImages[7]);
+		} else if (identifier == ECardIdentifier.NINE) {
+			image = cardImages[7];
 
-		} else if (identifier == ECardIdentifier.TEN.ordinal()) {
-			image = Optional.of(cardImages[8]);
+		} else if (identifier == ECardIdentifier.TEN) {
+			image = cardImages[8];
 
-		} else if (identifier == ECardIdentifier.PRINCE.ordinal()) {
-			image = Optional.of(cardImages[9]);
+		} else if (identifier == ECardIdentifier.PRINCE) {
+			image = cardImages[9];
 
-		} else if (identifier == ECardIdentifier.QUEEN.ordinal()) {
-			image = Optional.of(cardImages[10]);
+		} else if (identifier == ECardIdentifier.QUEEN) {
+			image = cardImages[10];
 
-		} else if (identifier == ECardIdentifier.KING.ordinal()) {
-			image = Optional.of(cardImages[11]);
+		} else if (identifier == ECardIdentifier.KING) {
+			image = cardImages[11];
 
-		} else if (identifier == ECardIdentifier.ACE.ordinal()) {
-			image = Optional.of(cardImages[12]);
+		} else if (identifier == ECardIdentifier.ACE) {
+			image = cardImages[12];
 
-		} else if (identifier == ECardIdentifier.RED_JOKER.ordinal()) {
-			image = Optional.of(cardImages[0]);
+		} else if (identifier == ECardIdentifier.RED_JOKER) {
+			image = cardImages[0];
 
-		} else if (identifier == ECardIdentifier.BLACK_JOKER.ordinal()) {
-			image = Optional.of(cardImages[1]);
+		} else if (identifier == ECardIdentifier.BLACK_JOKER) {
+			image = cardImages[1];
 
 		} else {
-			image = Optional.of(null);
+			throw new AssertionError();
 		}
 
 		return image;

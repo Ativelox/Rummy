@@ -88,7 +88,7 @@ public class RummyGame extends Thread {
 
 		for (int i = 0; i < cards.size(); i++) {
 			Card card = cards.get(i);
-			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t" + card.getID() + "\t\t");
+			message.append(card.getIdentifier().toString() + "\t" + card.getType().toString() + "\t" + card.getID() + "\t\t");
 		}
 		playerOne.send(message.toString());
 		playerTwo.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + cards.size());
@@ -121,7 +121,7 @@ public class RummyGame extends Thread {
 
 		for (int i = 0; i < cards.size(); i++) {
 			Card card = cards.get(i);
-			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t" + card.getID() + "\t\t");
+			message.append(card.getIdentifier().toString() + "\t" + card.getType().toString() + "\t" + card.getID() + "\t\t");
 		}
 		playerTwo.send(message.toString());
 		playerOne.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + cards.size());
