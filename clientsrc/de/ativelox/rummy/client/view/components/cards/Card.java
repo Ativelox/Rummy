@@ -11,8 +11,8 @@ import java.util.Optional;
 import de.ativelox.rummy.client.assets.Assets;
 import de.ativelox.rummy.client.view.components.AGUIElement;
 import de.ativelox.rummy.client.view.properties.IRenderable;
-import de.ativelox.rummy.properties.ECardIdentifier;
 import de.ativelox.rummy.properties.CardProperties;
+import de.ativelox.rummy.properties.ECardIdentifier;
 import de.ativelox.rummy.properties.ECardType;
 
 /**
@@ -23,7 +23,7 @@ import de.ativelox.rummy.properties.ECardType;
  * @author Ativelox <juliantischner27@web.de>
  *
  */
-public class Card extends AGUIElement {
+public class Card extends AGUIElement implements ICard{
 
 	/**
 	 * The identifier of this Card object.
@@ -39,6 +39,8 @@ public class Card extends AGUIElement {
 	 * The type of this Card object.
 	 */
 	private int type;
+	
+	private int ID;
 
 	/**
 	 * Initiates a new Card instance. The initial position on the component is
@@ -49,9 +51,10 @@ public class Card extends AGUIElement {
 	 * @param mType
 	 *            The type of this card.
 	 */
-	public Card(int mIdentifier, int mType) {
+	public Card(int mIdentifier, int mType, int mID) {
 		super(0, 0, CardProperties.SCALED_CARD_WIDTH, CardProperties.SCALED_CARD_HEIGHT);
 
+		ID = mID;
 		identifier = mIdentifier;
 		type = mType;
 
@@ -70,9 +73,10 @@ public class Card extends AGUIElement {
 	 * @param mY
 	 *            The y coordinate of this card.
 	 */
-	public Card(int mIdentifier, int mType, int mX, int mY) {
+	public Card(int mIdentifier, int mType, int mID, int mX, int mY) {
 		super(mX, mY, CardProperties.SCALED_CARD_WIDTH, CardProperties.SCALED_CARD_HEIGHT);
 
+		ID = mID;
 		identifier = mIdentifier;
 		type = mType;
 	}
@@ -83,16 +87,6 @@ public class Card extends AGUIElement {
 	 */
 	public void deHighlight() {
 		layer = IRenderable.DEFAULT_LAYER;
-
-	}
-
-	/**
-	 * Gets the current bounds of this card.
-	 * 
-	 * @return The current bounds.
-	 */
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, width, height);
 
 	}
 
@@ -124,6 +118,14 @@ public class Card extends AGUIElement {
 	 */
 	public void highlight() {
 		layer = IRenderable.HUD_LAYER;
+	}
+	
+	public void setID(int mID){
+		ID = mID;
+	}
+	
+	public int getID(){
+		return ID;
 	}
 
 	@Override
@@ -213,6 +215,14 @@ public class Card extends AGUIElement {
 
 		return image;
 
+	}
+
+	/* (non-Javadoc)
+	 * @see de.ativelox.rummy.client.view.components.cards.ICard#getBounds()
+	 */
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
 	}
 
 }

@@ -6,6 +6,7 @@ package de.ativelox.rummy.client.controller;
 import java.util.Comparator;
 
 import de.ativelox.rummy.client.view.components.cards.Card;
+import de.ativelox.rummy.client.view.components.cards.ICard;
 import de.ativelox.rummy.client.view.properties.IRenderable;
 
 /**

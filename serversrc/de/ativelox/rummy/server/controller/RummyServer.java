@@ -74,33 +74,54 @@ public class RummyServer extends Thread {
 	@Override
 	public void run() {
 		init();
-
-		RummyPlayer player1 = null;
-		RummyPlayer player2 = null;
-
-		try {
-			player1 = new RummyPlayer(serverSocket.accept(), 1, game);
-			player2 = new RummyPlayer(serverSocket.accept(), 2, game);
-		} catch (IOException e) {
-			e.printStackTrace();
+		openConnection();
+		
+		while(true){
+			
+			Table table = new Table();
+			game = new RummyGame(table);
+			
+			RummyPlayer player1 = null;
+			RummyPlayer player2 = null;
+	
+			try {
+				player1 = new RummyPlayer(serverSocket.accept(), 1, game);
+				//TODO: Remove Debug Print!
+				System.out.println("Found Player 1");
+				
+				player2 = new RummyPlayer(serverSocket.accept(), 2, game);
+				//TODO: Remove Debug Print!
+				System.out.println("Found Player 2");
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	
+			player1.start();
+			player2.start();
+	
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	
+			game.setPlayerOne(player1);
+			game.setPlayerTwo(player2);
+	
+			game.start();
+			//TODO: Remove Debug Print!
+			System.out.println("Starting game");
+			
+			player1.ready();
+			//TODO: Remove Debug Print!
+			System.out.println("Player one ready.");
+			player2.ready();
+			//TODO: Remove Debug Print!
+			System.out.println("Player two ready." + "\n");
+			
+		
 		}
-
-		player1.start();
-		player2.start();
-
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		game.setPlayerOne(player1);
-		game.setPlayerTwo(player2);
-
-		game.start();
-
-		player1.ready();
-		player2.ready();
 	}
 
 	/**
@@ -112,12 +133,6 @@ public class RummyServer extends Thread {
 		provider = new SettingsProvider();
 
 		settings.loadSettings(provider);
-
-		Table table = new Table();
-
-		game = new RummyGame(table);
-
-		openConnection();
 
 	}
 

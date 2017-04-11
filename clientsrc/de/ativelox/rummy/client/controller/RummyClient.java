@@ -25,6 +25,7 @@ import de.ativelox.rummy.client.view.GameView;
 import de.ativelox.rummy.client.view.TitleScreenView;
 import de.ativelox.rummy.client.view.WinScreenView;
 import de.ativelox.rummy.client.view.components.cards.Card;
+import de.ativelox.rummy.client.view.components.cards.ICard;
 import de.ativelox.rummy.commons.EMessage;
 import de.ativelox.rummy.settings.IClientSetting;
 import de.ativelox.rummy.settings.Settings;
@@ -195,7 +196,7 @@ public class RummyClient extends Thread {
 	 * 
 	 * @return THe selected card.
 	 */
-	public Card getSelectedCard() {
+	public ICard getSelectedCard() {
 		return selectedCard;
 	}
 
@@ -253,7 +254,7 @@ public class RummyClient extends Thread {
 			lastTime = now;
 
 			if (ticksToProcess >= 1) {
-				ticksPerSecond %= 60;
+				ticksPerSecond %= fps;
 				ticksToProcess--;
 
 				render();
@@ -284,11 +285,11 @@ public class RummyClient extends Thread {
 
 						requestHandDraw();
 
-					} else if (response.startsWith(EMessage.S2C_STARTING_HAND_INFORMATION.ordinal() + "")) {
+					} else if (response.startsWith(EMessage.S2C_OWN_HAND_UPDATE.ordinal() + "")) {
 						// receiving information about your initial hand from
 						// the server.
 						// protocol
-						// STARTING_HAND_INFORMATION\t\tIDENTIFIER\tTYPE\t\t....
+						// STARTING_HAND_UPDATE\t\tIDENTIFIER\tTYPE\t\t....
 						// n times for n cards
 
 						String cards[] = response.split("\t\t");
@@ -302,11 +303,31 @@ public class RummyClient extends Thread {
 
 							int identifier = Integer.parseInt(card[0]);
 							int type = Integer.parseInt(card[1]);
+							int ID = Integer.parseInt(card[2]);
 
-							hand.add(new Card(identifier, type));
+							hand.add(new Card(identifier, type, ID));
 						}
 						gameView.getOwnHand().setHand(hand);
 
+					} else if (response.startsWith(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "")) {
+						// receiving information about the hand of your enemy
+						// (number of cards)
+						// protocol
+						// OPPONENT_HAND_INFORMATION\t\tNUMBER_OF_CARDS
+
+						String args[] = response.split("\t\t");
+						int numberOfCards = Integer.parseInt(args[1]);
+
+						if (gameView.getOpponentHand().getCards().size() - numberOfCards == 1) {
+							gameView.getOpponentHand().removeCard();
+
+						} else if (gameView.getOpponentHand().getCards().size() - numberOfCards == -1) {
+							gameView.getOpponentHand().addCard();
+
+						} else {
+							gameView.getOpponentHand().setHand(numberOfCards);
+
+						}
 					}
 				}
 
@@ -344,6 +365,7 @@ public class RummyClient extends Thread {
 	 * Stops the client by exiting Threads run method.
 	 */
 	public void stopClient() {
+		out.println(EMessage.C2S_QUIT.ordinal() + "");
 		running = false;
 	}
 
@@ -476,7 +498,7 @@ public class RummyClient extends Thread {
 		// dehighlight it.
 		if ((ticks % 2) == 0 && !selected) {
 			if (gameView.getOwnHand() != null) {
-				Card card = gameView.getOwnHand().getCardByPosition(x, y);
+				Card card = (Card) gameView.getOwnHand().getCardByPosition(x, y);
 				if (card != null) {
 					card.highlight();
 					if (lastCard != null && !card.equals(lastCard)) {
@@ -497,20 +519,36 @@ public class RummyClient extends Thread {
 		}
 
 		if (selected && !gotCard) {
-			selectedCard = gameView.getOwnHand().getAndRemoveCardByPosition(x, y);
-			gotCard = true;
+			selectedCard = (Card) gameView.getOwnHand().getAndRemoveCardByPosition(x, y);
+			if (selectedCard != null) {
+				gotCard = true;
+				selected = false;
+			}
 		}
 
-		if (selected && selectedCard != null) {
+		if (selected && gotCard) {
+			if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
+				selected = false;
+				gotCard = false;
+				selectedCard = null;
+			} else {
+				selected = false;
+			}
+		}
+
+		if (gotCard && selectedCard != null) {
 			selectedCard.setPosition(new Point(x - selectedCard.getWidth() / 2, y - selectedCard.getHeight() / 2));
 
 		}
 
-		// TODO: check whether element got actually dropped in a valid place
-		if (!selected) {
-			selectedCard = null;
-			gotCard = false;
-		}
+		// TODO: add code for card dropping
+		// if (event) {
+		// out.println(EMessage.C2S_DROPPED_CARD.ordinal() + "\t\t" +
+		// selectedCard.getID());
+		//
+		// selectedCard = null;
+		// gotCard = false;
+		// }
 
 	}
 }

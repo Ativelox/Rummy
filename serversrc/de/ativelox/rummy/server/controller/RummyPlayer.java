@@ -76,13 +76,11 @@ public class RummyPlayer extends Thread {
 			out.println(EMessage.S2C_WELCOME.ordinal() + " " + playerNumber);
 
 		} catch (IOException e) {
-			// TODO: log to server
 			e.printStackTrace();
 
 			try {
 				socket.close();
 			} catch (IOException e1) {
-				// TODO: log to Server
 				e1.printStackTrace();
 			}
 		}
@@ -120,29 +118,7 @@ public class RummyPlayer extends Thread {
 
 				String command = in.readLine();
 
-				if (command.startsWith(EMessage.C2S_SELECTED.ordinal() + "")) {
-					String args[] = command.split("\t\t");
-					String mousePos[] = args[1].split("\t");
-					int mouseX = Integer.parseInt(mousePos[0]);
-					int mouseY = Integer.parseInt(mousePos[1]);
-
-					if (playerNumber == 1) {
-
-					} else if (playerNumber == 2) {
-
-					}
-
-				} else if (command.startsWith(EMessage.C2S_DESELECTED.ordinal() + "")) {
-
-					if (playerNumber == 1) {
-						// TODO: implement code, player 1 deselected a card.
-
-					} else if (playerNumber == 2) {
-						// TODO: implement code, player 2 deselected a card.
-
-					}
-
-				} else if (command.startsWith(EMessage.C2S_DRAW_CARD.ordinal() + "")) {
+				if (command.startsWith(EMessage.C2S_DRAW_CARD.ordinal() + "")) {
 
 					if (playerNumber == 1) {
 						// player one drawing a card
@@ -165,11 +141,21 @@ public class RummyPlayer extends Thread {
 						game.setPlayerTwoHand();
 					}
 
+				} else if(command.startsWith(EMessage.C2S_DROPPED_CARD.ordinal() + "")){
+					String args[] = command.split("\t\t");
+					int ID = Integer.parseInt(args[1]);
+					
+					if (playerNumber == 1){
+						game.removeCard(1, ID);
+						
+					} else if(playerNumber == 2){
+						game.removeCard(2, ID);
+					}
+					
 				}
 			}
 
 		} catch (IOException e) {
-			// TODO: log
 			e.printStackTrace();
 
 		} finally {
@@ -177,7 +163,6 @@ public class RummyPlayer extends Thread {
 				socket.close();
 
 			} catch (IOException e) {
-				// TODO log
 				e.printStackTrace();
 			}
 		}

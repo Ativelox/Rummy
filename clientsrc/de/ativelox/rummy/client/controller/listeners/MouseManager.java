@@ -40,7 +40,7 @@ public class MouseManager implements MouseMotionListener, MouseListener {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
+		client.setSelectedStatus(true);
 	}
 
 	/*
@@ -93,8 +93,6 @@ public class MouseManager implements MouseMotionListener, MouseListener {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		client.setSelectedStatus(true);
-
 	}
 
 	/*
@@ -105,8 +103,6 @@ public class MouseManager implements MouseMotionListener, MouseListener {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		client.setSelectedStatus(false);
-
 	}
 
 }

@@ -22,6 +22,8 @@ public class Card {
 	 * The type of this card.
 	 */
 	private ECardType type;
+	
+	private int ID;
 
 	/**
 	 * Initiates a new Card instance. Every card has to have an identifier and a
@@ -32,8 +34,9 @@ public class Card {
 	 * @param mType
 	 *            The type for this card.
 	 */
-	public Card(ECardIdentifier mIdentifier, ECardType mType) {
+	public Card(ECardIdentifier mIdentifier, ECardType mType, int mID) {
 
+		ID = mID;
 		type = mType;
 		identifier = mIdentifier;
 
@@ -56,6 +59,10 @@ public class Card {
 	public ECardType getType() {
 		return type;
 
+	}
+	
+	public int getID(){
+		return ID;
 	}
 
 }

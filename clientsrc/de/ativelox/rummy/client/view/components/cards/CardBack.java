@@ -4,6 +4,7 @@
 package de.ativelox.rummy.client.view.components.cards;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import de.ativelox.rummy.client.assets.Assets;
@@ -17,7 +18,7 @@ import de.ativelox.rummy.properties.CardProperties;
  * @author Ativelox <juliantischner27@web.de>
  *
  */
-public class CardBack extends AGUIElement {
+public class CardBack extends AGUIElement implements ICard{
 
 	/**
 	 * An image used to draw the card back onto the view.
@@ -70,6 +71,14 @@ public class CardBack extends AGUIElement {
 		} else {
 			g.drawImage(image, x, y, width, height, null);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see de.ativelox.rummy.client.view.components.cards.ICard#getBounds()
+	 */
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
 	}
 
 }

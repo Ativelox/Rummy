@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import de.ativelox.rummy.commons.EMessage;
 import de.ativelox.rummy.server.controller.RummyPlayer;
 import de.ativelox.rummy.server.model.Card;
+import de.ativelox.rummy.server.model.Hand;
 import de.ativelox.rummy.server.model.Table;
 
 /**
@@ -82,14 +83,15 @@ public class RummyGame extends Thread {
 		table.getPlayerOneHand().setHand(cards);
 
 		StringBuilder message = new StringBuilder();
-		message.append(EMessage.S2C_STARTING_HAND_INFORMATION.ordinal() + "\t\t");
+		message.append(EMessage.S2C_OWN_HAND_UPDATE.ordinal() + "\t\t");
 		// x \t y \t identifier \t type
 
 		for (int i = 0; i < cards.size(); i++) {
 			Card card = cards.get(i);
-			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t\t");
+			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t" + card.getID() + "\t\t");
 		}
 		playerOne.send(message.toString());
+		playerTwo.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + cards.size());
 	}
 
 	/**
@@ -114,15 +116,30 @@ public class RummyGame extends Thread {
 		table.getPlayerTwoHand().setHand(cards);
 
 		StringBuilder message = new StringBuilder();
-		message.append(EMessage.S2C_STARTING_HAND_INFORMATION.ordinal() + "\t\t");
+		message.append(EMessage.S2C_OWN_HAND_UPDATE.ordinal() + "\t\t");
 		// x \t y \t identifier \t type
 
 		for (int i = 0; i < cards.size(); i++) {
 			Card card = cards.get(i);
-			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t\t");
+			message.append(card.getIdentifier().ordinal() + "\t" + card.getType().ordinal() + "\t" + card.getID() + "\t\t");
 		}
 		playerTwo.send(message.toString());
+		playerOne.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + cards.size());
 
+	}
+	
+	public void removeCard(int playerNumber, int ID){
+		
+		if(playerNumber == 1){
+			table.getPlayerOneHand().removeCardByID(ID);
+			playerTwo.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + table.getPlayerOneHand().getCards().size());
+			
+		}else if(playerNumber == 2){
+			table.getPlayerTwoHand().removeCardByID(ID);
+			playerOne.send(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "\t\t" + table.getPlayerTwoHand().getCards().size());
+			
+		}
+		
 	}
 
 	/**

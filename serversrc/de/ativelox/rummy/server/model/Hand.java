@@ -65,4 +65,31 @@ public class Hand implements IHand {
 		}
 
 	}
+
+	/* (non-Javadoc)
+	 * @see de.ativelox.rummy.server.model.properties.IHand#removeCardByProperties(int, int)
+	 */
+	@Override
+	public void removeCardByID(int mID) {
+		
+		for(int i = 0; i < cards.size(); i++){
+			Card card = cards.get(i);
+			int id = card.getID();
+			
+			if(id == mID){
+				cards.remove(i);
+				break;
+			}
+			
+		}
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see de.ativelox.rummy.server.model.properties.IHand#getCards()
+	 */
+	@Override
+	public LinkedList<Card> getCards() {
+		return cards;
+	}
 }

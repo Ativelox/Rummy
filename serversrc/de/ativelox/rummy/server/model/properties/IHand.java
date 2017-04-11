@@ -14,21 +14,14 @@ import de.ativelox.rummy.server.model.Card;
  *
  */
 public interface IHand {
-
+	
 	/**
-	 * the width of ones own hand view.
+	 * Gets all the cards currently held.
+	 * 
+	 * @return
+	 * 		the cards.
 	 */
-	public static final int HAND_WIDTH = 900;
-
-	/**
-	 * The x offset of ones own hand view.
-	 */
-	public static final int X_OFFSET = 150;
-
-	/**
-	 * the y offset of ones own hand view.
-	 */
-	public static final int Y_OFFSET = 600;
+	public LinkedList<Card> getCards();
 
 	/**
 	 * Adds a card to your own hand.
@@ -53,5 +46,13 @@ public interface IHand {
 	 *            The cards which should be set as the new hand.
 	 */
 	public void setHand(LinkedList<Card> mCards);
+
+	/**
+	 * Removes a card by its ID.
+	 * 
+	 * @param mID
+	 * 			the id of the card to be removed
+	 */
+	public void removeCardByID(int mID);
 
 }
