@@ -26,35 +26,35 @@ public class OpponentHand extends AHand {
 	public OpponentHand(RenderManager mManager) {
 		super(mManager);
 	}
-	
-	public void addCard(){
+
+	public void addCard() {
 		ICard card = new CardBack();
 		cards.add(card);
 		manager.addElementToRender(card);
-		
+
 		adjustView(cards);
 	}
-	
-	public LinkedList<ICard> getCards(){
+
+	public LinkedList<ICard> getCards() {
 		return cards;
 	}
-	
-	public void removeCard(){
+
+	public void removeCard() {
 		manager.removeElementToRender(cards.poll());
-		
+
 		adjustView(cards);
 	}
-	
-	public void setHand(int numberOfCards){
-		
-		for(int i = 0; i < numberOfCards; i++){
+
+	public void setHand(int numberOfCards) {
+
+		for (int i = 0; i < numberOfCards; i++) {
 			ICard card = new CardBack();
 			cards.add(card);
 			manager.addElementToRender(card);
 		}
-		
+
 		adjustView(cards);
-		
+
 	}
 
 }

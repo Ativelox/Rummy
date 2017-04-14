@@ -237,7 +237,7 @@ public class RummyClient extends Thread {
 			e.printStackTrace();
 
 		}
-		
+
 		int fps = 60;
 		double timePerTick = 1_000_000_000 / fps;
 		double ticksToProcess = 0;
@@ -337,7 +337,7 @@ public class RummyClient extends Thread {
 				e.printStackTrace();
 
 			}
-			
+
 			try {
 				Thread.sleep(15);
 			} catch (InterruptedException e) {
@@ -536,13 +536,12 @@ public class RummyClient extends Thread {
 		}
 
 		if (selected && gotCard) {
-			if(gameView.getScoreArea().getBounds().contains(selectedCard.getBounds())){
+			if (gameView.getScoreArea().getBounds().contains(selectedCard.getBounds())) {
 				gameView.getScoreArea().addCard(selectedCard);
 				selected = false;
 				gotCard = false;
 				selectedCard = null;
-			}
-			else if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
+			} else if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
 				selected = false;
 				gotCard = false;
 				selectedCard = null;

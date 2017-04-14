@@ -14,14 +14,6 @@ import de.ativelox.rummy.server.model.Card;
  *
  */
 public interface IHand {
-	
-	/**
-	 * Gets all the cards currently held.
-	 * 
-	 * @return
-	 * 		the cards.
-	 */
-	public LinkedList<Card> getCards();
 
 	/**
 	 * Adds a card to your own hand.
@@ -32,6 +24,23 @@ public interface IHand {
 	public void addCard(Card mCard);
 
 	/**
+	 * Gets a card from the hand by a specific ID set when generating a card.
+	 * 
+	 * @param mID
+	 *            The ID of the card object.
+	 * 
+	 * @return the card associated with the ID.
+	 */
+	public Card getCardById(int mID);
+
+	/**
+	 * Gets all the cards currently held.
+	 * 
+	 * @return the cards.
+	 */
+	public LinkedList<Card> getCards();
+
+	/**
 	 * Removes a card from your own hand.
 	 * 
 	 * @param mIndex
@@ -40,19 +49,19 @@ public interface IHand {
 	public void removeCard(int mIndex);
 
 	/**
+	 * Removes a card by its ID.
+	 * 
+	 * @param mID
+	 *            the id of the card to be removed
+	 */
+	public void removeCardByID(int mID);
+
+	/**
 	 * Sets your own hand with cards.
 	 * 
 	 * @param mCards
 	 *            The cards which should be set as the new hand.
 	 */
 	public void setHand(LinkedList<Card> mCards);
-
-	/**
-	 * Removes a card by its ID.
-	 * 
-	 * @param mID
-	 * 			the id of the card to be removed
-	 */
-	public void removeCardByID(int mID);
 
 }

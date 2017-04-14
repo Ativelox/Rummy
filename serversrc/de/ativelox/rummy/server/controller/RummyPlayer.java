@@ -142,19 +142,19 @@ public class RummyPlayer extends Thread {
 						game.setPlayerTwoHand();
 					}
 
-				} else if(command.startsWith(EMessage.C2S_DROPPED_CARD.ordinal() + "")){
+				} else if (command.startsWith(EMessage.C2S_DROPPED_CARD.ordinal() + "")) {
 					String args[] = command.split("\t\t");
 					int ID = Integer.parseInt(args[1]);
-					
-					if (playerNumber == 1){
+
+					if (playerNumber == 1) {
 						game.removeCard(1, ID);
-						
-					} else if(playerNumber == 2){
+
+					} else if (playerNumber == 2) {
 						game.removeCard(2, ID);
 					}
-					
+
 				}
-				
+
 				Thread.sleep(100);
 			}
 

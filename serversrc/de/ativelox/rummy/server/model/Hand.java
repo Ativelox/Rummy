@@ -42,11 +42,61 @@ public class Hand implements IHand {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see de.ativelox.rummy.server.model.properties.IHand#getCardById(int)
+	 */
+	@Override
+	public Card getCardById(int mID) {
+		for (Card card : cards) {
+			if (card.getID() == mID) {
+				return card;
+			}
+		}
+
+		return null;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.ativelox.rummy.server.model.properties.IHand#getCards()
+	 */
+	@Override
+	public LinkedList<Card> getCards() {
+		return cards;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.ativelox.rummy.server.model.properties.IHand#removeCard(int)
 	 */
 	@Override
 	public void removeCard(int mIndex) {
 		cards.remove(mIndex);
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.ativelox.rummy.server.model.properties.IHand#removeCardByProperties(
+	 * int, int)
+	 */
+	@Override
+	public void removeCardByID(int mID) {
+
+		for (int i = 0; i < cards.size(); i++) {
+			Card card = cards.get(i);
+			int id = card.getID();
+
+			if (id == mID) {
+				cards.remove(i);
+				break;
+			}
+
+		}
 
 	}
 
@@ -64,32 +114,5 @@ public class Hand implements IHand {
 			cards.add(card);
 		}
 
-	}
-
-	/* (non-Javadoc)
-	 * @see de.ativelox.rummy.server.model.properties.IHand#removeCardByProperties(int, int)
-	 */
-	@Override
-	public void removeCardByID(int mID) {
-		
-		for(int i = 0; i < cards.size(); i++){
-			Card card = cards.get(i);
-			int id = card.getID();
-			
-			if(id == mID){
-				cards.remove(i);
-				break;
-			}
-			
-		}
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see de.ativelox.rummy.server.model.properties.IHand#getCards()
-	 */
-	@Override
-	public LinkedList<Card> getCards() {
-		return cards;
 	}
 }

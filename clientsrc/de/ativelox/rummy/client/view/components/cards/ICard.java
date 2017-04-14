@@ -12,8 +12,14 @@ import de.ativelox.rummy.client.view.properties.IRenderable;
  * @author Ativelox <juliantischner27@web.de>
  *
  */
-public interface ICard extends IRenderable{
-	
+public interface ICard extends IRenderable {
+
+	/**
+	 * Gets the current bounds of this card.
+	 * 
+	 * @return The current bounds.
+	 */
+	public Rectangle getBounds();
 
 	/**
 	 * Gets the height of this element.
@@ -44,13 +50,5 @@ public interface ICard extends IRenderable{
 	 *            The new Point of this element on the screen.
 	 */
 	public void setPosition(Point p);
-	
-
-	/**
-	 * Gets the current bounds of this card.
-	 * 
-	 * @return The current bounds.
-	 */
-	public Rectangle getBounds();
 
 }

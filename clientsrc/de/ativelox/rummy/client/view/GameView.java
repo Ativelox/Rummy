@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import de.ativelox.rummy.client.assets.Assets;
 import de.ativelox.rummy.client.controller.RenderManager;
+import de.ativelox.rummy.client.view.components.Button;
 import de.ativelox.rummy.client.view.components.Deck;
 import de.ativelox.rummy.client.view.components.OpponentHand;
 import de.ativelox.rummy.client.view.components.OwnHand;
@@ -20,6 +21,8 @@ import de.ativelox.rummy.client.view.properties.IRenderable;
  *
  */
 public class GameView extends AView {
+
+	private Button button;
 
 	/**
 	 * The deck view.
@@ -40,7 +43,7 @@ public class GameView extends AView {
 	 * Your own hand view.
 	 */
 	private OwnHand ownHand;
-	
+
 	private ScoreArea scoreArea;
 
 	/**
@@ -60,6 +63,15 @@ public class GameView extends AView {
 		super(mTitle, mWidth, mHeight, mManager);
 
 		manager = mManager;
+	}
+
+	/**
+	 * Gets the button of this view used to score points.
+	 * 
+	 * @return the button mentioned.
+	 */
+	public Button getButton() {
+		return button;
 	}
 
 	/**
@@ -98,8 +110,14 @@ public class GameView extends AView {
 	public OwnHand getOwnHand() {
 		return ownHand;
 	}
-	
-	public ScoreArea getScoreArea(){
+
+	/**
+	 * Gets the score area of this view used to store cards which already scored
+	 * points.
+	 * 
+	 * @return the mentioned score area.
+	 */
+	public ScoreArea getScoreArea() {
 		return scoreArea;
 	}
 
@@ -114,7 +132,7 @@ public class GameView extends AView {
 		opponentHand = new OpponentHand(manager);
 		deck = new Deck(manager);
 		scoreArea = new ScoreArea(manager);
-
+		button = new Button(manager);
 	}
 
 	/*

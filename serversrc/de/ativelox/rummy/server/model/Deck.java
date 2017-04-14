@@ -17,8 +17,6 @@ import de.ativelox.rummy.properties.ECardType;
  *
  */
 public class Deck {
-	
-	private int IDcounter;
 
 	/**
 	 * The number of cards one receives every game start.
@@ -29,6 +27,8 @@ public class Deck {
 	 * The stack of cards representing this deck.
 	 */
 	private Stack<Card> deck;
+
+	private int IDcounter;
 
 	/**
 	 * Initializes a new Deck instance.
@@ -45,32 +45,32 @@ public class Deck {
 	 */
 	public void generateNewDeck() {
 
-		for(int j = 0; j < 3; j++){
-		
+		for (int j = 0; j < 3; j++) {
+
 			for (ECardType type : ECardType.values()) {
 				if (type.ordinal() == ECardType.JOKERS.ordinal()) {
 					continue;
 				}
-	
+
 				for (ECardIdentifier identifier : ECardIdentifier.values()) {
 					if ((identifier.ordinal() == ECardIdentifier.BLACK_JOKER.ordinal())
 							|| (identifier.ordinal() == ECardIdentifier.RED_JOKER.ordinal())) {
 						continue;
 					}
-	
+
 					deck.push(new Card(identifier, type, IDcounter));
 					IDcounter++;
 				}
-	
+
 			}
-	
+
 			deck.push(new Card(ECardIdentifier.BLACK_JOKER, ECardType.JOKERS, IDcounter));
 			IDcounter++;
 			deck.push(new Card(ECardIdentifier.RED_JOKER, ECardType.JOKERS, IDcounter));
 			IDcounter++;
-		
+
 		}
-		
+
 		Collections.shuffle(deck);
 	}
 

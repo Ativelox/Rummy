@@ -23,11 +23,15 @@ public abstract class AHand {
 
 	public static final int HAND_WIDTH = 900;
 
-	public static final int X_OFFSET = 150;
+	public static final int OPPONENT_Y_OFFSET = 50;
 
 	public static final int OWN_Y_OFFSET = 600;
 
-	public static final int OPPONENT_Y_OFFSET = 50;
+	public static final int X_OFFSET = 150;
+
+	private Rectangle bounds;
+
+	private Comparator<IRenderable> layerComparator;
 
 	/**
 	 * A list holding all the Card views for yourself.
@@ -38,10 +42,6 @@ public abstract class AHand {
 	 * The render manager maintaining the render order.
 	 */
 	protected RenderManager manager;
-
-	private Rectangle bounds;
-	
-	private Comparator<IRenderable> layerComparator;
 
 	/**
 	 * Initiates a new Hand instance view.
@@ -72,34 +72,19 @@ public abstract class AHand {
 
 	}
 
-	/**
-	 * Gets the card by the position as well as removing and returning it.
-	 * 
-	 * @param mX
-	 *            The x coordinate of the point.
-	 * @param mY
-	 *            The y coordinate of the point.
-	 * @return The Card if one was found at the given position, <b>null</b>
-	 *         otherwise.
-	 */
-	public ICard getAndRemoveCardByPosition(int mX, int mY) {
-		return removeCard(getCardByPosition(mX, mY));
-
-	}
-
 	public boolean addCardByPosition(Card card) {
 		if (!bounds.intersects(card.getBounds())) {
 			return false;
 		}
-		
+
 		layerComparator = new LayerComparator();
 
 		int i;
 		for (i = 0; i < cards.size(); i++) {
 			Card tempCard = (Card) cards.get(i);
 			int result = layerComparator.compare(tempCard, card);
-			
-			if(result == 1){
+
+			if (result == 1) {
 				i -= 1;
 				break;
 			}
@@ -112,23 +97,10 @@ public abstract class AHand {
 			cards.add(i, card);
 
 		}
-		
+
 		adjustView(cards);
-		
+
 		return true;
-
-	}
-
-	/**
-	 * Gets the card by an index.
-	 * 
-	 * @param mIndex
-	 *            The index of the card.
-	 * 
-	 * @return The card specified by the index.
-	 */
-	public ICard getCardByIndex(int mIndex) {
-		return cards.get(mIndex);
 
 	}
 
@@ -156,6 +128,34 @@ public abstract class AHand {
 
 			}
 		}
+	}
+
+	/**
+	 * Gets the card by the position as well as removing and returning it.
+	 * 
+	 * @param mX
+	 *            The x coordinate of the point.
+	 * @param mY
+	 *            The y coordinate of the point.
+	 * @return The Card if one was found at the given position, <b>null</b>
+	 *         otherwise.
+	 */
+	public ICard getAndRemoveCardByPosition(int mX, int mY) {
+		return removeCard(getCardByPosition(mX, mY));
+
+	}
+
+	/**
+	 * Gets the card by an index.
+	 * 
+	 * @param mIndex
+	 *            The index of the card.
+	 * 
+	 * @return The card specified by the index.
+	 */
+	public ICard getCardByIndex(int mIndex) {
+		return cards.get(mIndex);
+
 	}
 
 	/**

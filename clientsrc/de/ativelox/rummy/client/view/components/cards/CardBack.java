@@ -18,7 +18,7 @@ import de.ativelox.rummy.properties.CardProperties;
  * @author Ativelox <juliantischner27@web.de>
  *
  */
-public class CardBack extends AGUIElement implements ICard{
+public class CardBack extends AGUIElement implements ICard {
 
 	/**
 	 * An image used to draw the card back onto the view.
@@ -50,6 +50,16 @@ public class CardBack extends AGUIElement implements ICard{
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see de.ativelox.rummy.client.view.components.cards.ICard#getBounds()
+	 */
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.ativelox.rummy.client.view.properties.IRenderable#getLayer()
 	 */
 	@Override
@@ -71,14 +81,6 @@ public class CardBack extends AGUIElement implements ICard{
 		} else {
 			g.drawImage(image, x, y, width, height, null);
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see de.ativelox.rummy.client.view.components.cards.ICard#getBounds()
-	 */
-	@Override
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, width, height);
 	}
 
 }

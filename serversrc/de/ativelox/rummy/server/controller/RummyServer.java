@@ -45,6 +45,7 @@ public class RummyServer extends Thread {
 	/**
 	 * A boolean determining whether the server is still running or not.
 	 */
+	@SuppressWarnings("unused")
 	private boolean serverRunning;
 
 	/**
@@ -75,52 +76,51 @@ public class RummyServer extends Thread {
 	public void run() {
 		init();
 		openConnection();
-		
-		while(true){
-			
+
+		while (true) {
+
 			Table table = new Table();
 			game = new RummyGame(table);
-			
+
 			RummyPlayer player1 = null;
 			RummyPlayer player2 = null;
-	
+
 			try {
 				player1 = new RummyPlayer(serverSocket.accept(), 1, game);
-				//TODO: Remove Debug Print!
+				// TODO: Remove Debug Print!
 				System.out.println("Found Player 1");
-				
+
 				player2 = new RummyPlayer(serverSocket.accept(), 2, game);
-				//TODO: Remove Debug Print!
+				// TODO: Remove Debug Print!
 				System.out.println("Found Player 2");
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	
+
 			player1.start();
 			player2.start();
-	
+
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-	
+
 			game.setPlayerOne(player1);
 			game.setPlayerTwo(player2);
-	
+
 			game.start();
-			//TODO: Remove Debug Print!
+			// TODO: Remove Debug Print!
 			System.out.println("Starting game");
-			
+
 			player1.ready();
-			//TODO: Remove Debug Print!
+			// TODO: Remove Debug Print!
 			System.out.println("Player one ready.");
 			player2.ready();
-			//TODO: Remove Debug Print!
+			// TODO: Remove Debug Print!
 			System.out.println("Player two ready." + "\n");
-			
-		
+
 		}
 	}
 

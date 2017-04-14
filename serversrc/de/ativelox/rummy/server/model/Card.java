@@ -13,6 +13,8 @@ import de.ativelox.rummy.properties.ECardType;
  */
 public class Card {
 
+	private int ID;
+
 	/**
 	 * The identifier of this card.
 	 */
@@ -22,8 +24,6 @@ public class Card {
 	 * The type of this card.
 	 */
 	private ECardType type;
-	
-	private int ID;
 
 	/**
 	 * Initiates a new Card instance. Every card has to have an identifier and a
@@ -40,6 +40,10 @@ public class Card {
 		type = mType;
 		identifier = mIdentifier;
 
+	}
+
+	public int getID() {
+		return ID;
 	}
 
 	/**
@@ -59,10 +63,6 @@ public class Card {
 	public ECardType getType() {
 		return type;
 
-	}
-	
-	public int getID(){
-		return ID;
 	}
 
 }

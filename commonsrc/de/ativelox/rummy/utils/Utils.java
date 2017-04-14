@@ -9,6 +9,8 @@ import java.util.Optional;
 
 import javax.imageio.ImageIO;
 
+import de.ativelox.rummy.properties.ECardIdentifier;
+
 /**
  * A static utils class providing utility methods.
  * 
@@ -21,6 +23,51 @@ public class Utils {
 	 * The path of the textures folder within res.
 	 */
 	private static final String texturePath = "/textures/";
+
+	public static int getNumberOfIdentifier(ECardIdentifier mIdentifier) {
+
+		if (mIdentifier == ECardIdentifier.TWO) {
+			return 2;
+
+		} else if (mIdentifier == ECardIdentifier.THREE) {
+			return 3;
+
+		} else if (mIdentifier == ECardIdentifier.FOUR) {
+			return 4;
+
+		} else if (mIdentifier == ECardIdentifier.FIVE) {
+			return 5;
+
+		} else if (mIdentifier == ECardIdentifier.SIX) {
+			return 6;
+
+		} else if (mIdentifier == ECardIdentifier.SEVEN) {
+			return 7;
+
+		} else if (mIdentifier == ECardIdentifier.EIGHT) {
+			return 8;
+
+		} else if (mIdentifier == ECardIdentifier.NINE) {
+			return 9;
+
+		} else if (mIdentifier == ECardIdentifier.TEN) {
+			return 10;
+
+		} else if (mIdentifier == ECardIdentifier.PRINCE) {
+			return 11;
+
+		} else if (mIdentifier == ECardIdentifier.QUEEN) {
+			return 12;
+
+		} else if (mIdentifier == ECardIdentifier.KING) {
+			return 13;
+
+		} else {
+			// no default assertion possible, special cases needed by caller.
+			return -1;
+		}
+
+	}
 
 	/**
 	 * Loads an image and returns it. Throws a NullPointerException if the image

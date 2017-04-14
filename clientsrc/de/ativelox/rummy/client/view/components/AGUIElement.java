@@ -4,6 +4,7 @@
 package de.ativelox.rummy.client.view.components;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import de.ativelox.rummy.client.view.properties.IRenderable;
 
@@ -52,6 +53,11 @@ public abstract class AGUIElement implements IRenderable {
 		y = mY;
 		width = mWidth;
 		height = mHeight;
+
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
 
 	}
 
