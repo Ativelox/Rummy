@@ -85,17 +85,16 @@ public class Hand implements IHand {
 	 * int, int)
 	 */
 	@Override
-	public void removeCardByID(int mID) {
-
+	public void removeCardsByIDs(LinkedList<Integer> ids) {
 		for (int i = 0; i < cards.size(); i++) {
 			Card card = cards.get(i);
-			int id = card.getID();
-
-			if (id == mID) {
-				cards.remove(i);
-				break;
+			
+			for(int j = 0; j < ids.size(); j++){
+				if(card.getID() == ids.get(j)){
+					cards.remove(i);
+					break;
+				}
 			}
-
 		}
 
 	}

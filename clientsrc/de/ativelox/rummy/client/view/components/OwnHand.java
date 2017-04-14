@@ -5,6 +5,7 @@ package de.ativelox.rummy.client.view.components;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,6 +58,11 @@ public class OwnHand extends AHand implements IRenderable {
 		cardHighlightCords = getValidCardGroups();
 
 		return cardExists;
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(AHand.X_OFFSET, AHand.OWN_Y_OFFSET, AHand.HAND_WIDTH, CardProperties.SCALED_CARD_HEIGHT);
+
 	}
 
 	/**

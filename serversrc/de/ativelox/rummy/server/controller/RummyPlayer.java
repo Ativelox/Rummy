@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.LinkedList;
 
 import de.ativelox.rummy.commons.EMessage;
 import de.ativelox.rummy.server.model.game.RummyGame;
@@ -122,10 +123,10 @@ public class RummyPlayer extends Thread {
 				if (command.startsWith(EMessage.C2S_DRAW_CARD.ordinal() + "")) {
 
 					if (playerNumber == 1) {
-						// TODO: player one drawing a card
+						game.drawCard(1);
 
 					} else if (playerNumber == 2) {
-						// TODO: player two drawing a card
+						game.drawCard(2);
 
 					}
 
@@ -142,15 +143,19 @@ public class RummyPlayer extends Thread {
 						game.setPlayerTwoHand();
 					}
 
-				} else if (command.startsWith(EMessage.C2S_DROPPED_CARD.ordinal() + "")) {
+				} else if (command.startsWith(EMessage.C2S_DROPPED_CARDS.ordinal() + "")) {
 					String args[] = command.split("\t\t");
-					int ID = Integer.parseInt(args[1]);
+					LinkedList<Integer> ids = new LinkedList<>();
+
+					for (int i = 1; i < args.length; i++) {
+						ids.add(Integer.parseInt(args[i]));
+					}
 
 					if (playerNumber == 1) {
-						game.removeCard(1, ID);
+						game.removeCards(1, ids);
 
 					} else if (playerNumber == 2) {
-						game.removeCard(2, ID);
+						game.removeCards(2, ids);
 					}
 
 				}

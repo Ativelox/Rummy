@@ -268,82 +268,6 @@ public class RummyClient extends Thread {
 			if (timer > 1_000_000_000) {
 				timer = 0;
 			}
-
-			// getting responses by the server when in game.
-			try {
-				if (in.ready()) {
-					String response = in.readLine();
-
-					if (response.startsWith(EMessage.S2C_VICTORY.ordinal() + "")) {
-						setView(winScreenView);
-
-					} else if (response.startsWith(EMessage.S2C_LOSE.ordinal() + "")) {
-						setView(defeatScreenView);
-
-					} else if (response.startsWith(EMessage.S2C_READY.ordinal() + "")) {
-						// requesting to draw a new hand
-						// both players are ready
-						setView(gameView);
-
-						requestHandDraw();
-
-					} else if (response.startsWith(EMessage.S2C_OWN_HAND_UPDATE.ordinal() + "")) {
-						// receiving information about your initial hand from
-						// the server.
-						// protocol
-						// STARTING_HAND_UPDATE\t\tIDENTIFIER\tTYPE\t\t....
-						// n times for n cards
-
-						String cards[] = response.split("\t\t");
-						String card[];
-						LinkedList<Card> hand = new LinkedList<>();
-
-						for (int i = 1; i < cards.length; i++) {
-							// card array containing every information about the
-							// card needed
-							card = cards[i].split("\t");
-
-							ECardIdentifier identifier = ECardIdentifier.valueOf(card[0]);
-							ECardType type = ECardType.valueOf(card[1]);
-							int ID = Integer.parseInt(card[2]);
-
-							hand.add(new Card(identifier, type, ID));
-						}
-						gameView.getOwnHand().setHand(hand);
-
-					} else if (response.startsWith(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "")) {
-						// receiving information about the hand of your enemy
-						// (number of cards)
-						// protocol
-						// OPPONENT_HAND_INFORMATION\t\tNUMBER_OF_CARDS
-
-						String args[] = response.split("\t\t");
-						int numberOfCards = Integer.parseInt(args[1]);
-
-						if (gameView.getOpponentHand().getCards().size() - numberOfCards == 1) {
-							gameView.getOpponentHand().removeCard();
-
-						} else if (gameView.getOpponentHand().getCards().size() - numberOfCards == -1) {
-							gameView.getOpponentHand().addCard();
-
-						} else {
-							gameView.getOpponentHand().setHand(numberOfCards);
-
-						}
-					}
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-
-			}
-
-			try {
-				Thread.sleep(15);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -393,6 +317,79 @@ public class RummyClient extends Thread {
 
 		} catch (IOException e) {
 			System.err.println("An I/O Exception occured while trying to open a new socket.");
+			e.printStackTrace();
+
+		}
+	}
+
+	private void checkForMessages() {
+
+		// getting responses by the server when in game.
+		try {
+			if (in.ready()) {
+				String response = in.readLine();
+
+				if (response.startsWith(EMessage.S2C_VICTORY.ordinal() + "")) {
+					setView(winScreenView);
+
+				} else if (response.startsWith(EMessage.S2C_LOSE.ordinal() + "")) {
+					setView(defeatScreenView);
+
+				} else if (response.startsWith(EMessage.S2C_READY.ordinal() + "")) {
+					// requesting to draw a new hand
+					// both players are ready
+					setView(gameView);
+
+					requestHandDraw();
+
+				} else if (response.startsWith(EMessage.S2C_OWN_HAND_UPDATE.ordinal() + "")) {
+					// receiving information about your initial hand from
+					// the server.
+					// protocol
+					// STARTING_HAND_UPDATE\t\tIDENTIFIER\tTYPE\t\t....
+					// n times for n cards
+
+					String cards[] = response.split("\t\t");
+					String card[];
+
+					for (int i = 1; i < cards.length; i++) {
+						// card array containing every information about the
+						// card needed
+						card = cards[i].split("\t");
+
+						ECardIdentifier identifier = ECardIdentifier.valueOf(card[0]);
+						ECardType type = ECardType.valueOf(card[1]);
+						int ID = Integer.parseInt(card[2]);
+						
+						//TODO: Remove Debug Print!
+						System.out.println(identifier + ", " + type + ", " + ID);
+
+						gameView.getOwnHand().addCard(new Card(identifier, type, ID));
+					}
+
+				} else if (response.startsWith(EMessage.S2C_OPPONENT_HAND_UPDATE.ordinal() + "")) {
+					// receiving information about the hand of your enemy
+					// (number of cards)
+					// protocol
+					// OPPONENT_HAND_INFORMATION\t\tNUMBER_OF_CARDS
+
+					String args[] = response.split("\t\t");
+					int numberOfCards = Integer.parseInt(args[1]);
+
+					if (gameView.getOpponentHand().getCards().size() - numberOfCards == 1) {
+						gameView.getOpponentHand().removeCard();
+
+					} else if (gameView.getOpponentHand().getCards().size() - numberOfCards == -1) {
+						gameView.getOpponentHand().addCard();
+
+					} else {
+						gameView.getOpponentHand().setHand(numberOfCards);
+
+					}
+				}
+			}
+
+		} catch (IOException e) {
 			e.printStackTrace();
 
 		}
@@ -527,21 +524,33 @@ public class RummyClient extends Thread {
 			}
 		}
 
+		if (ticks % 10 == 0) {
+			checkForMessages();
+		}
+
+		Point mousePosition = new Point(x, y);
+
+		if (selected && (!gameView.getOwnHand().getBounds().contains(mousePosition)
+				&& !gameView.getDeck().getBounds().contains(mousePosition))) {
+			selected = false;
+		}
+
 		if (selected && !gotCard) {
+			
+			//reposition card
 			selectedCard = (Card) gameView.getOwnHand().getAndRemoveCardByPosition(x, y);
 			if (selectedCard != null) {
 				gotCard = true;
+				selected = false;
+			}else if(gameView.getDeck().getBounds().contains(mousePosition)){
+				//draw a new card from the deck
+				out.println(EMessage.C2S_DRAW_CARD.ordinal() + "");
 				selected = false;
 			}
 		}
 
 		if (selected && gotCard) {
-			if (gameView.getScoreArea().getBounds().contains(selectedCard.getBounds())) {
-				gameView.getScoreArea().addCard(selectedCard);
-				selected = false;
-				gotCard = false;
-				selectedCard = null;
-			} else if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
+			if (gameView.getOwnHand().addCardByPosition(selectedCard)) {
 				selected = false;
 				gotCard = false;
 				selectedCard = null;
@@ -557,7 +566,7 @@ public class RummyClient extends Thread {
 
 		// TODO: add code for card dropping
 		// if (event) {
-		// out.println(EMessage.C2S_DROPPED_CARD.ordinal() + "\t\t" +
+		// out.println(EMessage.C2S_DROPPED_CARDS.ordinal() + "\t\t" +
 		// selectedCard.getID());
 		//
 		// selectedCard = null;

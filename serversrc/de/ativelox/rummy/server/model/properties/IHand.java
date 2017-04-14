@@ -49,12 +49,14 @@ public interface IHand {
 	public void removeCard(int mIndex);
 
 	/**
-	 * Removes a card by its ID.
+	 * Removes cards by their IDs.
 	 * 
 	 * @param mID
-	 *            the id of the card to be removed
+	 *            the ids of the cards to be removed
 	 */
-	public void removeCardByID(int mID);
+	public void removeCardsByIDs(LinkedList<Integer> ids);
+
+	
 
 	/**
 	 * Sets your own hand with cards.

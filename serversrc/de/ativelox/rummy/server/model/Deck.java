@@ -5,6 +5,7 @@ package de.ativelox.rummy.server.model;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.Stack;
 
 import de.ativelox.rummy.properties.ECardIdentifier;
@@ -104,8 +105,12 @@ public class Deck {
 	 * 
 	 * @return The top card.
 	 */
-	public Card getTopCard() {
-		return deck.pop();
+	public Optional<Card> getTopCard() {
+		if(deck.isEmpty()){
+			return Optional.empty();
+		}else{
+			return Optional.of(deck.pop());
+		}
 	}
 
 }

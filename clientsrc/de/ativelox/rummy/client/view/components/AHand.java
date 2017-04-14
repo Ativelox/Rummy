@@ -226,6 +226,19 @@ public abstract class AHand {
 		return card;
 
 	}
+	
+	/**
+	 * Adds the given card to this hand view.
+	 * 
+	 * @param mCard
+	 * 			The card mentioned.
+	 */
+	public void addCard(ICard mCard){
+		cards.add(mCard);
+		adjustView(cards);
+		manager.addElementToRender(mCard);
+		
+	}
 
 	/**
 	 * Removes a card from the hand by index.

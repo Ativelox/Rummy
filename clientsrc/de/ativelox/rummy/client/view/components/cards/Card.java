@@ -135,6 +135,7 @@ public class Card extends AGUIElement implements ICard {
 
 	@Override
 	public void render(final Graphics g) {
+		g.drawRoundRect(x, y - 1, width, height, 10, 10);
 		g.drawImage(cardImage, x, y, width, height, null);
 	}
 
@@ -147,7 +148,7 @@ public class Card extends AGUIElement implements ICard {
 	 * NullPointerException if no image could be associated with the identifier
 	 * and type of this card.
 	 * 
-	 * @return Optional&ltBufferedImage&gt: The BufferedImage for the card
+	 * @return BufferedImage: The BufferedImage for the card
 	 *         initialized.
 	 */
 	private BufferedImage getCorrespondingImage() {
